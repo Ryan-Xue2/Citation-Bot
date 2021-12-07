@@ -8,7 +8,7 @@ function citeCurrentTab() {
         let publisher = null;
         let dateAccesed = null;
 
-        sourceInfo = {
+        let sourceInfo = {
             'url': url,
             'authors': [{fname: null, mname: null, lname: null}],
             'title': null,
@@ -17,14 +17,15 @@ function citeCurrentTab() {
             'publisher': null,
             'dateAccessed': null
         };
-        chrome.storage.sync.set({url: sourceInfo});
+
+        chrome.storage.sync.set({[url]: sourceInfo});
         console.log(`Added ${url} to reference list`);
     })
 }
 
 function addAuthor() {
     let node = document.querySelector('#authors');
-    node.innerHTML += '<hr><label for="fname">Author First Name: </label><input type="text" name="fname"><br><label for="mname">Author Middle Name: </label><input type="text" name="mname"><br><label for="fname">Author Last Name: </label><input type="text" name="fname"><br>'
+    node.innerHTML += ''
 }
 
 let citeButton = document.querySelector('#cite-button');

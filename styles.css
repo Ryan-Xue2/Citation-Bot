@@ -1,7 +1,15 @@
-a {
-    color: black;
-    background-color: darkgrey;
+body {
+    min-width: 400px;
+    padding: 10px;
 }
-a:hover {
-    color: black;
+
+.align-input {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    grid-gap: 5px;
+}
+
+button {
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
