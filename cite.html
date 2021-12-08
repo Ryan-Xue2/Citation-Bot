@@ -9,28 +9,31 @@
         <h4>Author(s)</h4>
         <div id="authors" class="align-input">
             <input type="text" name="fname" placeholder="First name"><br>
-            <input type="text" name="fname" placeholder="Last name"><br>
+            <input type="text" name="lname" placeholder="Last name"><br>
         </div>
 
         <button id="add-author">Add Contributor</button>
+        <button id="remove-author">Remove Contributor</button>
 
         <h4>Publication Info</h4>
         <div class="align-input">
             <label>Website title</label>
-            <input type="text">
+            <input type="text" id="website-title">
             <label>Publisher</label>
-            <input type="text">
+            <input type="text" id="publisher">
+            <label>Article/Page Title</label>
+            <input type="text" id="article-title">
             <label>Published</label>
             <div>
-                <input type="number" placeholder="Day" min="1" max="31" >
-                <input type="number" placeholder="Month" min="1" max="12">
-                <input type="number" placeholder="Year" min="1900" max="9999">
+                <input type="number" placeholder="Day" min="1" max="31" id="pub-day" name="pub-date">
+                <input type="number" placeholder="Month" min="1" max="12" id="pub-month" name="pub-date">
+                <input type="number" placeholder="Year" min="1900" max="9999" id="pub-year" name="pub-date">
             </div>
             <label>Date Accessed</label>
             <div>
-                <input type="number" placeholder="Day" min="1" max="31" >
-                <input type="number" placeholder="Month" min="1" max="12">
-                <input type="number" placeholder="Year" min="1900" max="9999">
+                <input type="number" placeholder="Day" min="1" max="31" id="day-accessed" name="date-accessed">
+                <input type="number" placeholder="Month" min="1" max="12" id="month-accessed" name="date-accessed">
+                <input type="number" placeholder="Year" min="1900" max="9999" id="year-accessed" name="date-accessed">
             </div>
         </div>
 
