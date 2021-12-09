@@ -1,53 +1,95 @@
 let referenceList = document.querySelector('#reference-list');
-let citationFormat = '';
+// let citationFormat = '';
 
 function abbreviateMonth(month) {
     switch(month) {
-        case 1: return 'Jan.';
-        case 2: return 'Feb.';
-        case 3: return 'Mar.';
-        case 4: return 'Apr.';
-        case 5: return 'May';
-        case 6: return 'June';
-        case 7: return 'July';
-        case 8: return 'Aug.';
-        case 9: return 'Sept.';
-        case 10: return 'Oct.';
-        case 11: return 'Nov.';
-        case 12: return 'Dec.';
+        case '1': return 'Jan.';
+        case '2': return 'Feb.';
+        case '3': return 'Mar.';
+        case '4': return 'Apr.';
+        case '5': return 'May';
+        case '6': return 'June';
+        case '7': return 'July';
+        case '8': return 'Aug.';
+        case '9': return 'Sept.';
+        case '10': return 'Oct.';
+        case '11': return 'Nov.';
+        case '12': return 'Dec.';
         default: break;
     }
 }
 function mla(item) {
+    // Note: This is slightly bugged (spaces) fix later
     let citation = '';
+
     // Authors
-    citation += 'last name, first name.';
+    let authorCount = 0;
+    const authors = [];
+
+    for (let i = 0; i < item['authors'].length; i++) {
+        let fname = item['authors'][i]['fname'];
+        let lname = item['authors'][i]['lname'];
+
+        if (lname || fname) {
+            authorCount++;
+            if (authorCount == 1) {
+                if (lname && fname) {
+                    authors.push(lname + ', ' + fname);
+                }
+                else {
+                    authors.push(lname ? lname : fname);
+                }
+            } else if (authorCount == 2) {
+                if (lname && fname) {
+                    authors.push(fname + ' ' + lname);
+                } else {
+                    authors.push(lname ? lname : fname);
+                }
+            } else {
+                break;
+            }
+        }
+    }
+    if (authorCount == 1) {
+        citation += authors[0] + '.'; 
+    } else if (authorCount == 2) {
+        citation += authors[0] + ' and ';
+        citation += authors[1] + '.';
+    } else if (authorCount == 3) {
+        citation += authors[0] + ', et al.';
+    }
     
     // Article Title
-    citation += `"${item['title']}."`;
+    if (item['title']) citation += ` "${item['title']}."`;
 
     // Website title
-    citation += `<i>${item['websiteTitle']}</i>, `;
+    if (item['websiteTitle']) citation += ' <i>' + item['websiteTitle'] + '</i>';
 
     // Publishing information
-    citation += `${item['publisher']}, `
-    citation += `${item['pubDay']} `
-    citation += abbreviateMonth(item['month']);
-    citation += ' ';
-    citation += item['pubYear'];
-
-    // URL (remove the https:// part later)
-    citation += item['url'] + '.';
+    if (item['publisher']) citation += ', ' + item['publisher'];
+    if (item['pubDay'] || item['pubMonth'] || item['pubYear']) {
+        if (item['pubDay']) citation += ', ' + item['pubDay']
+        if (item['pubMonth']) citation += ' ' + abbreviateMonth(item['pubMonth']);
+        if (item['pubYear']) citation += ' ' + item['pubYear'];
+    }
+    
+    // URL (without https:// part)
+    citation += ', ' + item['url'].split('://')[1] + '.';
     
     // Date accessed
-    citation += ' ' + item['dayAccessed'];
-    citation += ' ' + abbreviateMonth(item['monthAccessed']);
-    citation += ' ' + item['yearAccessed'];
+    if (item['dayAccessed'] || item['monthAccessed'] || item['yearAccessed']) {
+        citation += ' Accessed';
+        if (item['dayAccessed']) citation += ' ' + item['dayAccessed'];
+        if (item['monthAccessed']) citation += ' ' + abbreviateMonth(item['monthAccessed']);
+        if (item['yearAccessed']) citation += ' ' + item['yearAccessed'];
+        citation += '.'
+    }
+
     return citation;
 }
 
 function apa(item) {
-    return;
+    return 'APA has not been implemented yet:(';
 }
 
 // If the user clicks the clear button, remove all selected sources from reference list
@@ -62,13 +104,24 @@ clearButton.addEventListener('click', function() {
 // Copy selected sources to clipboard
 let copyButton = document.querySelector('#copy-button');
 copyButton.addEventListener('click', function() {
-    navigator.clipboard.writeText('');
+    chrome.storage.sync.get(null, function(items) {
+        // This button is also bugged right now (italics) https://jsfiddle.net/jdhenckel/km7prgv4/3/
+        let values = Object.values(items);
+        let copiedText = '';
+        for (let i = 0; i < values.length; i++) {
+            copiedText += mla(values[i]);
+            copiedText += '\n\n';
+        }
+        navigator.clipboard.writeText(copiedText);
+    })
 })
 
 // Write sources to reference list in selected format
 chrome.storage.sync.get(null, function(items) {
-    let urls = Object.keys(items);
-    for (let i = 0; i < urls.length; i++) {
-        referenceList.innerHTML += `<input type="checkbox" name="${urls[i]}"><label for="${urls[i]}">${mla(items[urls[i]])}</label>`;
+    let values = Object.values(items);
+    for (let i = 0; i < values.length; i++) {
+        let listItem = document.createElement('LI');
+        listItem.innerHTML = mla(values[i]);
+        referenceList.appendChild(listItem);
     }
 })
