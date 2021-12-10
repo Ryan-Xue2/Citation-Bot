@@ -1,5 +1,4 @@
 let referenceList = document.querySelector('#reference-list');
-// let citationFormat = '';
 
 function abbreviateMonth(month) {
     switch(month) {
@@ -18,8 +17,8 @@ function abbreviateMonth(month) {
         default: break;
     }
 }
+
 function mla(item) {
-    // Note: This is slightly bugged (spaces) fix later
     let citation = '';
 
     // Authors
@@ -35,8 +34,7 @@ function mla(item) {
             if (authorCount == 1) {
                 if (lname && fname) {
                     authors.push(lname + ', ' + fname);
-                }
-                else {
+                } else {
                     authors.push(lname ? lname : fname);
                 }
             } else if (authorCount == 2) {
@@ -60,17 +58,29 @@ function mla(item) {
     }
     
     // Article Title
-    if (item['title']) citation += ` "${item['title']}."`;
+    if (item['title']) {
+        citation += ` "${item['title']}."`;
+    }
 
     // Website title
-    if (item['websiteTitle']) citation += ' <i>' + item['websiteTitle'] + '</i>';
+    if (item['websiteTitle']) {
+        citation += ' ' + item['websiteTitle'];  // Should be italicized
+    }
 
     // Publishing information
-    if (item['publisher']) citation += ', ' + item['publisher'];
+    if (item['publisher']) {
+        citation += ', ' + item['publisher'];
+    }
     if (item['pubDay'] || item['pubMonth'] || item['pubYear']) {
-        if (item['pubDay']) citation += ', ' + item['pubDay']
-        if (item['pubMonth']) citation += ' ' + abbreviateMonth(item['pubMonth']);
-        if (item['pubYear']) citation += ' ' + item['pubYear'];
+        if (item['pubDay']) { 
+            citation += ', ' + item['pubDay'];
+        }
+        if (item['pubMonth']) {
+            citation += ' ' + abbreviateMonth(item['pubMonth']);
+        }
+        if (item['pubYear']) {
+            citation += ' ' + item['pubYear'];
+        }
     }
     
     // URL (without https:// part)
@@ -79,17 +89,19 @@ function mla(item) {
     // Date accessed
     if (item['dayAccessed'] || item['monthAccessed'] || item['yearAccessed']) {
         citation += ' Accessed';
-        if (item['dayAccessed']) citation += ' ' + item['dayAccessed'];
-        if (item['monthAccessed']) citation += ' ' + abbreviateMonth(item['monthAccessed']);
-        if (item['yearAccessed']) citation += ' ' + item['yearAccessed'];
+        if (item['dayAccessed']) {
+            citation += ' ' + item['dayAccessed'];
+        }
+        if (item['monthAccessed']) {
+            citation += ' ' + abbreviateMonth(item['monthAccessed']);
+        }
+        if (item['yearAccessed']) {
+            citation += ' ' + item['yearAccessed'];
+        }
         citation += '.'
     }
 
-    return citation;
-}
-
-function apa(item) {
-    return 'APA has not been implemented yet:(';
+    return citation.trimLeft();
 }
 
 // If the user clicks the clear button, remove all selected sources from reference list
@@ -105,7 +117,6 @@ clearButton.addEventListener('click', function() {
 let copyButton = document.querySelector('#copy-button');
 copyButton.addEventListener('click', function() {
     chrome.storage.sync.get(null, function(items) {
-        // This button is also bugged right now (italics) https://jsfiddle.net/jdhenckel/km7prgv4/3/
         let values = Object.values(items);
         let copiedText = '';
         for (let i = 0; i < values.length; i++) {
