@@ -121,7 +121,7 @@ copyButton.addEventListener('click', function() {
         let copiedText = '';
         for (let i = 0; i < values.length; i++) {
             copiedText += mla(values[i]);
-            copiedText += '\n\n';
+            copiedText += '<br><br>';
         }
         const blob = new Blob([copiedText], {type: 'text/html'});
         const clipboardItem = new ClipboardItem({'text/html': blob});
