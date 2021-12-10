@@ -13,8 +13,13 @@ button {
     margin-top: 10px;
     margin-bottom: 10px;
     border-radius: 4px;
+    background-color: white;
+    border-color: rgb(0, 118, 255);
+    color: rgb(0, 118, 255);
+    border-style: solid;
 }
 
 button:hover {
-    background-color: darkgrey;
+    border-color: rgb(0, 59, 128);
+    color: rgb(0, 59, 128);
 }

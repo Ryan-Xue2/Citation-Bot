@@ -24,17 +24,9 @@
             <label>Article/Page Title</label>
             <input type="text" id="article-title">
             <label>Published</label>
-            <div>
-                <input type="number" placeholder="Day" min="1" max="31" id="pub-day" name="pub-date">
-                <input type="number" placeholder="Month" min="1" max="12" id="pub-month" name="pub-date">
-                <input type="number" placeholder="Year" min="1900" max="2100" id="pub-year" name="pub-date">
-            </div>
+            <input type="date" placeholder="YYYY-MM-DD" id="pub-date">
             <label>Date Accessed</label>
-            <div>
-                <input type="number" placeholder="Day" min="1" max="31" id="day-accessed" name="date-accessed">
-                <input type="number" placeholder="Month" min="1" max="12" id="month-accessed" name="date-accessed">
-                <input type="number" placeholder="Year" min="1900" max="2100" id="year-accessed" name="date-accessed">
-            </div>
+            <input type="date" placeholder="YYYY-MM-DD" id="date-accessed">
         </div>
         
         <button id="cite-button">Cite Current Page</button>

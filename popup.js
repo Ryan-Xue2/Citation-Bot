@@ -64,7 +64,7 @@ function mla(item) {
 
     // Website title
     if (item['websiteTitle']) {
-        citation += ' ' + item['websiteTitle'];  // Should be italicized
+        citation += ' <i>' + item['websiteTitle'] + '</i>';
     }
 
     // Publishing information
@@ -98,7 +98,7 @@ function mla(item) {
         if (item['yearAccessed']) {
             citation += ' ' + item['yearAccessed'];
         }
-        citation += '.'
+        citation += '.';
     }
 
     return citation.trimLeft();
@@ -123,7 +123,9 @@ copyButton.addEventListener('click', function() {
             copiedText += mla(values[i]);
             copiedText += '\n\n';
         }
-        navigator.clipboard.writeText(copiedText);
+        const blob = new Blob([copiedText], {type: 'text/html'});
+        const clipboardItem = new ClipboardItem({'text/html': blob});
+        navigator.clipboard.write([clipboardItem]);
     })
 })
 

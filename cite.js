@@ -4,11 +4,12 @@ chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
     websiteTitle.value = tabs[0].title;
 })
 
-let [dayAccessed, monthAccessed, yearAccessed] = document.getElementsByName('date-accessed');
+let dateAccessed = document.querySelector('#date-accessed');
 let today = new Date();
-dayAccessed.value = today.getDate();
-monthAccessed.value = today.getMonth() + 1;
-yearAccessed.value = today.getFullYear();
+let dd = String(today.getDate()).padStart(2, '0');
+let mm = String(today.getMonth() + 1).padStart(2, '0');
+let yyyy = today.getFullYear();
+dateAccessed.value = `${yyyy}-${mm}-${dd}`;
 
 function citeCurrentTab() {
     // Cite current tab and store source info in storage
@@ -24,7 +25,8 @@ function citeCurrentTab() {
 
         let title = document.querySelector('#article-title');
         let publisher = document.querySelector('#publisher');
-        let [pubDay, pubMonth, pubYear] = document.getElementsByName('pub-date');
+        let [pubYear, pubMonth, pubDay] = document.querySelector('#pub-date').value.split('-');
+        let [yearAccessed, monthAccessed, dayAccessed] = dateAccessed.value.split('-');
         
         const sourceInfo = {
             'url': url,
@@ -32,12 +34,12 @@ function citeCurrentTab() {
             'title': title.value.trim(),
             'websiteTitle': websiteTitle.value.trim(),
             'publisher': publisher.value.trim(),
-            'pubDay': pubDay.value,
-            'pubMonth': pubMonth.value,
-            'pubYear': pubYear.value,
-            'dayAccessed': dayAccessed.value,
-            'monthAccessed': monthAccessed.value,
-            'yearAccessed': yearAccessed.value
+            'pubDay': pubDay,
+            'pubMonth': pubMonth,
+            'pubYear': pubYear,
+            'dayAccessed': dayAccessed,
+            'monthAccessed': monthAccessed,
+            'yearAccessed': yearAccessed
         };
 
         chrome.storage.sync.set({[url]: sourceInfo});
