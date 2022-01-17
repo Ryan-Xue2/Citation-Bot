@@ -14,7 +14,7 @@ dateAccessed.value = `${yyyy}-${mm}-${dd}`;
 function citeCurrentTab() {
     // Cite current tab and store source info in storage
     chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
-        let url = tabs[0].url;
+        let url = tabs[0].url.split('#:~:text=')[0];  // #:~:text= is a special highlighting feature in Chrome
 
         const authors = [];
         let fnames = document.getElementsByName('fname');
@@ -43,7 +43,6 @@ function citeCurrentTab() {
         };
 
         chrome.storage.sync.set({[url]: sourceInfo});
-        console.log(`Added ${url} to reference list`);
     })
 }
 
