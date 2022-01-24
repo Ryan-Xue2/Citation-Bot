@@ -92,7 +92,7 @@ function mla(item) {
             citation += ` ${item['dayAccessed']}`;
         }
         if (item['monthAccessed']) {
-            citation += ` ${abbreviateMonth(item('monthAccessed'))}`;
+            citation += ` ${abbreviateMonth(item['monthAccessed'])}`;
         }
         if (item['yearAccessed']) {
             citation += ` ${item['yearAccessed']}`;
