@@ -33,13 +33,13 @@ function mla(item) {
             authorCount++;
             if (authorCount == 1) {
                 if (lname && fname) {
-                    authors.push(lname + ', ' + fname);
+                    authors.push(`${lname}, ${fname}`);
                 } else {
                     authors.push(lname ? lname : fname);
                 }
             } else if (authorCount == 2) {
                 if (lname && fname) {
-                    authors.push(fname + ' ' + lname);
+                    authors.push(`${fname} ${lname}`);
                 } else {
                     authors.push(lname ? lname : fname);
                 }
@@ -49,12 +49,11 @@ function mla(item) {
         }
     }
     if (authorCount == 1) {
-        citation += authors[0] + '.'; 
+        citation += `${authors[0]}.`; 
     } else if (authorCount == 2) {
-        citation += authors[0] + ' and ';
-        citation += authors[1] + '.';
+        citation += `${authors[0]} and ${authors[1]}.`;
     } else if (authorCount == 3) {
-        citation += authors[0] + ', et al.';
+        citation += `${authors[0]}, et al.`;
     }
     
     // Article Title
@@ -64,44 +63,48 @@ function mla(item) {
 
     // Website title
     if (item['websiteTitle']) {
-        citation += ' <i>' + item['websiteTitle'] + '</i>';
+        citation += ` <i>${item['websiteTitle']}</i>`;
     }
 
     // Publishing information
     if (item['publisher']) {
-        citation += ', ' + item['publisher'];
+        citation += `, ${item['publisher']}`;
     }
     if (item['pubDay'] || item['pubMonth'] || item['pubYear']) {
         if (item['pubDay']) { 
-            citation += ', ' + item['pubDay'];
+            citation += `, ${item['pubDay']}`;
         }
         if (item['pubMonth']) {
-            citation += ' ' + abbreviateMonth(item['pubMonth']);
+            citation += ` ${abbreviateMonth(item['pubMonth'])}`;
         }
         if (item['pubYear']) {
-            citation += ' ' + item['pubYear'];
+            citation += ` ${item['pubYear']}`;
         }
     }
     
     // URL (without https:// part)
-    citation += ', ' + item['url'].split('://')[1] + '.';
+    citation += `, ${item['url'].split('://')[1]}.`;
     
     // Date accessed
     if (item['dayAccessed'] || item['monthAccessed'] || item['yearAccessed']) {
         citation += ' Accessed';
         if (item['dayAccessed']) {
-            citation += ' ' + item['dayAccessed'];
+            citation += ` ${item['dayAccessed']}`;
         }
         if (item['monthAccessed']) {
-            citation += ' ' + abbreviateMonth(item['monthAccessed']);
+            citation += ` ${abbreviateMonth(item('monthAccessed'))}`;
         }
         if (item['yearAccessed']) {
-            citation += ' ' + item['yearAccessed'];
+            citation += ` ${item['yearAccessed']}`;
         }
         citation += '.';
     }
 
-    return citation.trimLeft();
+    return citation.trimStart();
+}
+
+function apa(item) {
+    return;
 }
 
 // If the user clicks the clear button, remove all selected sources from reference list
